@@ -1,16 +1,17 @@
 'use client'
 
 import { useState, useRef } from 'react'
+import SplashScreen from '@/components/SplashScreen'
 import CameraScreen from '@/components/CameraScreen'
 import VideoPlayer from '@/components/VideoPlayer'
 import PoseOverlay from '@/components/PoseOverlay'
 import MetricCards from '@/components/MetricCards'
 import FeedbackPanel from '@/components/FeedbackPanel'
 
-type Screen = 'camera' | 'playback'
+type Screen = 'splash' | 'camera' | 'playback'
 
 export default function HomePage() {
-  const [screen, setScreen] = useState<Screen>('camera')
+  const [screen, setScreen] = useState<Screen>('splash')
   const [videoUrl, setVideoUrl] = useState<string | null>(null)
   const [metrics, setMetrics] = useState({
     hipRotation: 0,
@@ -48,6 +49,10 @@ export default function HomePage() {
     setVideoUrl(null)
     setMetrics({ hipRotation: 0, shoulderRotation: 0, tempoRatio: 0 })
     setFeedback([])
+  }
+
+  if (screen === 'splash') {
+    return <SplashScreen onStart={() => setScreen('camera')} />
   }
 
   return (
