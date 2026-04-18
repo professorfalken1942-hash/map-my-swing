@@ -81,7 +81,7 @@ export default function CameraScreen({ onRecordComplete, onCancel }: CameraScree
       </div>
 
       {/* Main content */}
-      <div style={{ flex: 1, maxWidth: '600px', margin: '0 auto', width: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+      <div style={{ flex: 1, maxWidth: '100%', margin: '0 auto', width: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
         {/* Video always in DOM so ref is available before isCameraReady */}
         <video
           ref={videoRef}
@@ -90,9 +90,10 @@ export default function CameraScreen({ onRecordComplete, onCancel }: CameraScree
           muted
           style={{
             width: '100%',
-            aspectRatio: '16/9',
+            height: 'calc(100vh - 220px)',
+            objectFit: 'cover',
             background: '#000',
-            marginBottom: '2rem',
+            marginBottom: '1.5rem',
             display: isCameraReady ? 'block' : 'none',
           }}
         />
