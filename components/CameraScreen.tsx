@@ -15,17 +15,20 @@ export default function CameraScreen({ onRecordComplete, onCancel }: CameraScree
 
   const startCamera = async () => {
     try {
+      console.log('Requesting camera access...')
       const stream = await navigator.mediaDevices.getUserMedia({
         video: { facingMode: 'user', width: { ideal: 1280 }, height: { ideal: 720 } },
         audio: false,
       })
+      console.log('Camera stream acquired:', stream)
       if (videoRef.current) {
         videoRef.current.srcObject = stream
         setIsCameraReady(true)
+        console.log('Camera ready')
       }
     } catch (error) {
-      console.error('Camera access denied:', error)
-      alert('Please allow camera access to record your swing')
+      console.error('Camera access error:', error)
+      alert(`Camera error: ${error instanceof Error ? error.message : 'Unknown error'}`)
     }
   }
 
@@ -81,7 +84,10 @@ export default function CameraScreen({ onRecordComplete, onCancel }: CameraScree
       <div style={{ flex: 1, maxWidth: '600px', margin: '0 auto', width: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
         {!isCameraReady ? (
           <button
-            onClick={startCamera}
+            onClick={() => {
+              console.log('Start Camera button clicked')
+              startCamera()
+            }}
             style={{
               padding: '1.5rem 2rem',
               background: '#d4af37',
