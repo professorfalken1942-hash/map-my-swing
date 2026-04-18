@@ -21,20 +21,7 @@ export default function SplashScreen({ onStart }: SplashScreenProps) {
         overflow: 'hidden',
       }}
     >
-      <img
-        src="/golfer-silhouette.jpg"
-        alt="Golfer in mid-swing"
-        style={{
-          position: 'absolute',
-          right: '-60px',
-          bottom: '-40px',
-          width: '520px',
-          height: 'auto',
-          opacity: 0.15,
-          pointerEvents: 'none',
-          objectFit: 'cover',
-        }}
-      />
+
 
       <div style={{ zIndex: 1, display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
         <span
