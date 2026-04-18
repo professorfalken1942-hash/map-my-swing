@@ -22,30 +22,57 @@ export default function SplashScreen({ onStart }: SplashScreenProps) {
       }}
     >
       <svg
-        viewBox="0 0 600 600"
+        viewBox="0 0 400 500"
         aria-hidden
         style={{
           position: 'absolute',
-          right: '-140px',
-          bottom: '-80px',
-          width: '680px',
-          height: '680px',
-          opacity: 0.08,
+          right: '-80px',
+          bottom: '-60px',
+          width: '500px',
+          height: '600px',
+          opacity: 0.12,
           pointerEvents: 'none',
         }}
       >
-        <path
-          fill="#d4af37"
-          d="M312 70c14 0 25 11 25 25s-11 25-25 25-25-11-25-25 11-25 25-25zm-38 90 46-18c6-2 13 0 17 5l38 56c5 7 3 17-4 22-7 5-17 3-22-4l-22-32v60l42 140c3 10-3 21-13 24-10 3-21-3-24-13l-36-120-16 52 22 92c3 11-4 22-15 24-11 3-22-4-24-15l-24-102c-1-5 0-10 2-14l30-96v-56l-30 44c-5 7-14 9-21 4s-9-14-4-21l54-76c2-3 5-5 8-6z"
-        />
-        <circle cx="120" cy="480" r="14" fill="#d4af37" opacity="0.6" />
-        <path
-          stroke="#d4af37"
-          strokeWidth="3"
-          fill="none"
-          opacity="0.5"
-          d="M120 480 Q 220 340 340 240"
-        />
+        {/* Golfer silhouette in mid-swing */}
+        {/* Head */}
+        <circle cx="200" cy="80" r="20" fill="#d4af37" />
+        
+        {/* Neck */}
+        <line x1="200" y1="100" x2="200" y2="120" stroke="#d4af37" strokeWidth="8" strokeLinecap="round" />
+        
+        {/* Torso (angled for swing) */}
+        <line x1="200" y1="120" x2="180" y2="240" stroke="#d4af37" strokeWidth="14" strokeLinecap="round" />
+        
+        {/* Upper left arm (back swing) */}
+        <line x1="180" y1="130" x2="80" y2="100" stroke="#d4af37" strokeWidth="10" strokeLinecap="round" />
+        
+        {/* Lower left arm (club grip) */}
+        <line x1="80" y1="100" x2="40" y2="60" stroke="#d4af37" strokeWidth="8" strokeLinecap="round" />
+        
+        {/* Right arm (at side during backswing) */}
+        <line x1="180" y1="140" x2="200" y2="200" stroke="#d4af37" strokeWidth="10" strokeLinecap="round" />
+        
+        {/* Left hip/thigh */}
+        <line x1="180" y1="240" x2="160" y2="380" stroke="#d4af37" strokeWidth="12" strokeLinecap="round" />
+        
+        {/* Left lower leg */}
+        <line x1="160" y1="380" x2="155" y2="460" stroke="#d4af37" strokeWidth="10" strokeLinecap="round" />
+        
+        {/* Right hip/thigh */}
+        <line x1="180" y1="240" x2="220" y2="370" stroke="#d4af37" strokeWidth="12" strokeLinecap="round" />
+        
+        {/* Right lower leg */}
+        <line x1="220" y1="370" x2="225" y2="460" stroke="#d4af37" strokeWidth="10" strokeLinecap="round" />
+        
+        {/* Golf club shaft (extended back) */}
+        <line x1="40" y1="60" x2="20" y2="20" stroke="#d4af37" strokeWidth="6" strokeLinecap="round" opacity="0.7" />
+        
+        {/* Club head */}
+        <rect x="15" y="10" width="12" height="28" fill="#d4af37" opacity="0.8" rx="2" />
+        
+        {/* Ground line */}
+        <line x1="100" y1="470" x2="280" y2="470" stroke="#d4af37" strokeWidth="3" strokeLinecap="round" opacity="0.4" />
       </svg>
 
       <div style={{ zIndex: 1, display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
