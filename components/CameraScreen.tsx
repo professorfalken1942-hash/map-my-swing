@@ -4,9 +4,10 @@ import { useState, useRef } from 'react'
 
 interface CameraScreenProps {
   onRecordComplete: (blob: Blob) => void
+  onCancel?: () => void
 }
 
-export default function CameraScreen({ onRecordComplete }: CameraScreenProps) {
+export default function CameraScreen({ onRecordComplete, onCancel }: CameraScreenProps) {
   const videoRef = useRef<HTMLVideoElement>(null)
   const mediaRecorderRef = useRef<MediaRecorder | null>(null)
   const [isRecording, setIsRecording] = useState(false)
@@ -54,64 +55,82 @@ export default function CameraScreen({ onRecordComplete }: CameraScreenProps) {
   }
 
   return (
-    <div style={{ maxWidth: '600px', margin: '0 auto', textAlign: 'center' }}>
-      <h1 style={{ marginBottom: '2rem' }}>Record Your Swing</h1>
-
-      {!isCameraReady ? (
-        <button
-          onClick={startCamera}
-          style={{
-            padding: '1rem 2rem',
-            background: '#d4af37',
-            color: '#000',
-            border: 'none',
-            fontWeight: 600,
-            fontSize: '1.1rem',
-            cursor: 'pointer',
-            borderRadius: '4px',
-          }}
-        >
-          📷 Start Camera
-        </button>
-      ) : (
-        <>
-          <video
-            ref={videoRef}
-            autoPlay
-            playsInline
-            style={{
-              width: '100%',
-              aspectRatio: '16/9',
-              background: '#000',
-              marginBottom: '2rem',
-              borderRadius: '4px',
-            }}
-          />
-
+    <div style={{ minHeight: '100vh', background: '#1a1a1a', color: '#fff', padding: '2rem', display: 'flex', flexDirection: 'column' }}>
+      {/* Header with back button */}
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '3rem', maxWidth: '600px', margin: '0 auto 3rem' }}>
+        <h1 style={{ fontSize: '1.8rem', fontWeight: 600, margin: 0 }}>Record Your Swing</h1>
+        {onCancel && (
           <button
-            onClick={isRecording ? stopRecording : startRecording}
+            onClick={onCancel}
             style={{
-              padding: '1rem 2rem',
-              background: isRecording ? '#ef4444' : '#d4af37',
-              color: isRecording ? '#fff' : '#000',
+              background: 'transparent',
+              border: '1px solid #d4af37',
+              color: '#d4af37',
+              padding: '0.5rem 1rem',
+              fontWeight: 600,
+              cursor: 'pointer',
+              fontSize: '0.9rem',
+            }}
+          >
+            ← Back
+          </button>
+        )}
+      </div>
+
+      {/* Main content */}
+      <div style={{ flex: 1, maxWidth: '600px', margin: '0 auto', width: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+        {!isCameraReady ? (
+          <button
+            onClick={startCamera}
+            style={{
+              padding: '1.5rem 2rem',
+              background: '#d4af37',
+              color: '#000',
               border: 'none',
               fontWeight: 600,
               fontSize: '1.1rem',
               cursor: 'pointer',
-              borderRadius: '4px',
-              width: '100%',
             }}
           >
-            {isRecording ? '⏹ Stop Recording' : '🔴 Start Recording'}
+            📷 Start Camera
           </button>
+        ) : (
+          <>
+            <video
+              ref={videoRef}
+              autoPlay
+              playsInline
+              style={{
+                width: '100%',
+                aspectRatio: '16/9',
+                background: '#000',
+                marginBottom: '2rem',
+              }}
+            />
 
-          {isRecording && (
-            <p style={{ marginTop: '1rem', color: '#ef4444', fontWeight: 600 }}>
-              ● Recording...
-            </p>
-          )}
-        </>
-      )}
+            <button
+              onClick={isRecording ? stopRecording : startRecording}
+              style={{
+                padding: '1rem',
+                background: isRecording ? '#ef4444' : '#d4af37',
+                color: isRecording ? '#fff' : '#000',
+                border: 'none',
+                fontWeight: 600,
+                fontSize: '1.1rem',
+                cursor: 'pointer',
+              }}
+            >
+              {isRecording ? '⏹ Stop Recording' : '🔴 Start Recording'}
+            </button>
+
+            {isRecording && (
+              <p style={{ marginTop: '1rem', color: '#ef4444', fontWeight: 600, textAlign: 'center' }}>
+                ● Recording...
+              </p>
+            )}
+          </>
+        )}
+      </div>
     </div>
   )
 }

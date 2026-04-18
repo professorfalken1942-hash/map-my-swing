@@ -56,45 +56,50 @@ export default function HomePage() {
   }
 
   return (
-    <div style={{ minHeight: '100vh', background: '#1a1a1a', color: '#fff', padding: '1rem' }}>
+    <div style={{ minHeight: '100vh', background: '#1a1a1a', color: '#fff' }}>
       {screen === 'camera' ? (
-        <CameraScreen onRecordComplete={handleRecordComplete} />
+        <CameraScreen onRecordComplete={handleRecordComplete} onCancel={() => setScreen('camera')} />
       ) : (
-        <div style={{ maxWidth: '1000px', margin: '0 auto' }}>
-          <h1 style={{ marginBottom: '1.5rem' }}>Your Swing</h1>
-          
-          <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr', gap: '2rem', marginBottom: '2rem' }}>
-            {/* Video + Overlay */}
-            <div>
-              {videoUrl && (
-                <>
-                  <VideoPlayer videoUrl={videoUrl} />
-                  <PoseOverlay />
-                </>
-              )}
-            </div>
-
-            {/* Metrics + Feedback */}
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
-              <MetricCards metrics={metrics} />
-              <FeedbackPanel feedback={feedback} />
-            </div>
+        <div style={{ padding: '2rem 1rem', minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
+          {/* Header with back button */}
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem', maxWidth: '1000px', margin: '0 auto 2rem' }}>
+            <h1 style={{ fontSize: '1.8rem', fontWeight: 600, margin: 0 }}>Your Swing</h1>
+            <button
+              onClick={handleReset}
+              style={{
+                background: 'transparent',
+                border: '1px solid #d4af37',
+                color: '#d4af37',
+                padding: '0.5rem 1rem',
+                fontWeight: 600,
+                cursor: 'pointer',
+                fontSize: '0.9rem',
+              }}
+            >
+              ← Record New Swing
+            </button>
           </div>
 
-          <button
-            onClick={handleReset}
-            style={{
-              padding: '0.75rem 1.5rem',
-              background: '#d4af37',
-              color: '#000',
-              border: 'none',
-              fontWeight: 600,
-              cursor: 'pointer',
-              width: '100%',
-            }}
-          >
-            Record New Swing
-          </button>
+          {/* Main analysis grid */}
+          <div style={{ flex: 1, maxWidth: '1000px', margin: '0 auto', width: '100%' }}>
+            <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr', gap: '2rem' }}>
+              {/* Video + Overlay */}
+              <div>
+                {videoUrl && (
+                  <>
+                    <VideoPlayer videoUrl={videoUrl} />
+                    <PoseOverlay />
+                  </>
+                )}
+              </div>
+
+              {/* Metrics + Feedback */}
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
+                <MetricCards metrics={metrics} />
+                <FeedbackPanel feedback={feedback} />
+              </div>
+            </div>
+          </div>
         </div>
       )}
     </div>
