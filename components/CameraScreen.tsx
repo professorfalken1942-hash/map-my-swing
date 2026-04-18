@@ -82,12 +82,24 @@ export default function CameraScreen({ onRecordComplete, onCancel }: CameraScree
 
       {/* Main content */}
       <div style={{ flex: 1, maxWidth: '600px', margin: '0 auto', width: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+        {/* Video always in DOM so ref is available before isCameraReady */}
+        <video
+          ref={videoRef}
+          autoPlay
+          playsInline
+          muted
+          style={{
+            width: '100%',
+            aspectRatio: '16/9',
+            background: '#000',
+            marginBottom: '2rem',
+            display: isCameraReady ? 'block' : 'none',
+          }}
+        />
+
         {!isCameraReady ? (
           <button
-            onClick={() => {
-              console.log('Start Camera button clicked')
-              startCamera()
-            }}
+            onClick={startCamera}
             style={{
               padding: '1.5rem 2rem',
               background: '#d4af37',
@@ -102,18 +114,6 @@ export default function CameraScreen({ onRecordComplete, onCancel }: CameraScree
           </button>
         ) : (
           <>
-            <video
-              ref={videoRef}
-              autoPlay
-              playsInline
-              style={{
-                width: '100%',
-                aspectRatio: '16/9',
-                background: '#000',
-                marginBottom: '2rem',
-              }}
-            />
-
             <button
               onClick={isRecording ? stopRecording : startRecording}
               style={{
