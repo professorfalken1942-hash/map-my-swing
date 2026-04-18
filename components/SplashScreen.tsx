@@ -10,8 +10,10 @@ export default function SplashScreen({ onStart }: SplashScreenProps) {
       style={{
         position: 'fixed',
         inset: 0,
-        background:
-          'radial-gradient(ellipse at 50% 20%, #1f4a2e 0%, #0d1f15 45%, #050807 100%)',
+        backgroundImage: `url('/golfer-silhouette.jpg')`,
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        backgroundRepeat: 'no-repeat',
         color: '#fff',
         display: 'flex',
         flexDirection: 'column',
