@@ -20,7 +20,21 @@ export default function SplashScreen({ onStart }: SplashScreenProps) {
         overflow: 'hidden',
       }}
     >
-
+      {/* Golfer silhouette */}
+      <img
+        src="/golfer.png"
+        aria-hidden
+        style={{
+          position: 'absolute',
+          right: '-20px',
+          bottom: '80px',
+          height: '70%',
+          maxHeight: '520px',
+          opacity: 0.18,
+          pointerEvents: 'none',
+          userSelect: 'none',
+        }}
+      />
 
       <div style={{ zIndex: 1, display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
         <span

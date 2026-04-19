@@ -1,6 +1,7 @@
 'use client'
 
-import { useState, useRef } from 'react'
+import { useState, useRef, useEffect } from 'react'
+import Link from 'next/link'
 import PageHeader from '@/components/PageHeader'
 
 interface CameraScreenProps {
@@ -32,6 +33,28 @@ export default function CameraScreen({ onRecordComplete, onCancel }: CameraScree
     } catch (error) {
       console.error('Camera access error:', error)
       alert(`Camera error: ${error instanceof Error ? error.message : 'Unknown error'}`)
+      setMode('choose')
+    }
+  }
+
+  const stopCameraStream = () => {
+    const stream = videoRef.current?.srcObject as MediaStream | null
+    if (stream) {
+      stream.getTracks().forEach((t) => t.stop())
+      if (videoRef.current) videoRef.current.srcObject = null
+    }
+    setIsCameraReady(false)
+  }
+
+  useEffect(() => {
+    return () => stopCameraStream()
+  }, [])
+
+  const handleBack = () => {
+    if (mode === 'choose') {
+      onCancel?.()
+    } else {
+      stopCameraStream()
       setMode('choose')
     }
   }
@@ -86,11 +109,16 @@ export default function CameraScreen({ onRecordComplete, onCancel }: CameraScree
         title={mode === 'choose' ? 'Analyze Your Swing' : mode === 'camera' ? 'Record Your Swing' : 'Upload a Swing'}
         leftAction={
           <button
-            onClick={() => mode === 'choose' ? onCancel?.() : setMode('choose')}
+            onClick={handleBack}
             style={{ background: 'transparent', border: 'none', color: '#d4af37', fontWeight: 600, cursor: 'pointer', fontSize: '0.9rem', padding: 0, minHeight: '44px', display: 'flex', alignItems: 'center' }}
           >
             ← {mode === 'choose' ? 'Back' : 'Change'}
           </button>
+        }
+        rightAction={
+          <Link href="/history" style={{ color: '#d4af37', textDecoration: 'none', fontSize: '0.85rem', fontWeight: 600, minHeight: '44px', display: 'flex', alignItems: 'center' }}>
+            History
+          </Link>
         }
       />
 

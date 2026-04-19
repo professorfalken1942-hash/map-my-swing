@@ -95,17 +95,10 @@ export default function HomePage() {
   return (
     <div style={{ minHeight: '100vh', background: '#1a1a1a', color: '#fff' }}>
       {screen === 'camera' ? (
-        <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
-          <PageHeader
-            title="Record Your Swing"
-            rightAction={
-              <Link href="/history" style={{ color: '#d4af37', textDecoration: 'none', fontSize: '0.85rem', fontWeight: 600 }}>
-                History
-              </Link>
-            }
-          />
-          <CameraScreen onRecordComplete={handleRecordComplete} onCancel={() => setScreen('camera')} />
-        </div>
+        <CameraScreen
+          onRecordComplete={handleRecordComplete}
+          onCancel={() => setScreen('splash')}
+        />
       ) : (
         <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
           <PageHeader
