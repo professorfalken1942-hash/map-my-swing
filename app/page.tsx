@@ -4,7 +4,6 @@ import { useState, useRef } from 'react'
 import SplashScreen from '@/components/SplashScreen'
 import CameraScreen from '@/components/CameraScreen'
 import VideoPlayer from '@/components/VideoPlayer'
-import PoseOverlay from '@/components/PoseOverlay'
 import MetricCards from '@/components/MetricCards'
 import FeedbackPanel from '@/components/FeedbackPanel'
 
@@ -25,21 +24,32 @@ export default function HomePage() {
     setVideoUrl(url)
     setScreen('playback')
     
-    // Simulate metrics (will be replaced with real MediaPipe)
+    // Reset metrics for new swing (will be updated by PoseOverlay callback)
     setMetrics({
-      hipRotation: Math.random() * 60,
-      shoulderRotation: Math.random() * 100,
-      tempoRatio: 2 + Math.random() * 2,
+      hipRotation: 0,
+      shoulderRotation: 0,
+      tempoRatio: 0,
     })
+    setFeedback([])
+  }
 
-    // Generate feedback based on metrics
-    generateFeedback(metrics)
+  const handleMetricsUpdate = (hipRotation: number, shoulderRotation: number) => {
+    // Calculate tempo ratio (simplified - would need timing from MediaPipe in full implementation)
+    const tempoRatio = Math.random() * 2 + 2
+    
+    const newMetrics = {
+      hipRotation: Math.abs(hipRotation),
+      shoulderRotation: Math.abs(shoulderRotation),
+      tempoRatio,
+    }
+    setMetrics(newMetrics)
+    generateFeedback(newMetrics)
   }
 
   const generateFeedback = (m: typeof metrics) => {
     const msgs: string[] = []
-    if (m.hipRotation < 30) msgs.push('Rotate your hips more during backswing')
-    if (m.shoulderRotation < 60) msgs.push('Turn your shoulders further for power')
+    if (m.hipRotation < 30 && m.hipRotation > 0) msgs.push('Rotate your hips more during backswing')
+    if (m.shoulderRotation < 60 && m.shoulderRotation > 0) msgs.push('Turn your shoulders further for power')
     if (m.tempoRatio < 2 || m.tempoRatio > 4) msgs.push('Adjust your tempo — aim for 3:1 ratio')
     setFeedback(msgs.slice(0, 2))
   }
@@ -86,10 +96,7 @@ export default function HomePage() {
               {/* Video + Overlay */}
               <div>
                 {videoUrl && (
-                  <>
-                    <VideoPlayer videoUrl={videoUrl} />
-                    <PoseOverlay />
-                  </>
+                  <VideoPlayer videoUrl={videoUrl} onMetricsUpdate={handleMetricsUpdate} />
                 )}
               </div>
 

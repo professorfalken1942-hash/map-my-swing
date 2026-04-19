@@ -2,12 +2,14 @@
 
 import { useState, useRef } from 'react'
 import { Play, Pause, SkipBack, SkipForward } from 'lucide-react'
+import PoseOverlay from './PoseOverlay'
 
 interface VideoPlayerProps {
   videoUrl: string
+  onMetricsUpdate?: (hipRotation: number, shoulderRotation: number) => void
 }
 
-export default function VideoPlayer({ videoUrl }: VideoPlayerProps) {
+export default function VideoPlayer({ videoUrl, onMetricsUpdate }: VideoPlayerProps) {
   const videoRef = useRef<HTMLVideoElement>(null)
   const [isPlaying, setIsPlaying] = useState(false)
   const [currentTime, setCurrentTime] = useState(0)
@@ -40,14 +42,17 @@ export default function VideoPlayer({ videoUrl }: VideoPlayerProps) {
 
   return (
     <div style={{ marginBottom: '1.5rem' }}>
-      <video
-        ref={videoRef}
-        src={videoUrl}
-        style={{ width: '100%', aspectRatio: '16/9', background: '#000', borderRadius: '4px', marginBottom: '1rem' }}
-        onTimeUpdate={(e) => setCurrentTime(e.currentTarget.currentTime)}
-        onLoadedMetadata={(e) => setDuration(e.currentTarget.duration)}
-        onEnded={() => setIsPlaying(false)}
-      />
+      <div style={{ position: 'relative', width: '100%', aspectRatio: '16/9', marginBottom: '1rem' }}>
+        <video
+          ref={videoRef}
+          src={videoUrl}
+          style={{ width: '100%', height: '100%', background: '#000', borderRadius: '4px' }}
+          onTimeUpdate={(e) => setCurrentTime(e.currentTarget.currentTime)}
+          onLoadedMetadata={(e) => setDuration(e.currentTarget.duration)}
+          onEnded={() => setIsPlaying(false)}
+        />
+        <PoseOverlay videoRef={videoRef} onMetricsUpdate={onMetricsUpdate} />
+      </div>
 
       {/* Scrubber */}
       <input
