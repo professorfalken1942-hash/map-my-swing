@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useRef } from 'react'
+import PageHeader from '@/components/PageHeader'
 
 interface CameraScreenProps {
   onRecordComplete: (blob: Blob) => void
@@ -58,27 +59,15 @@ export default function CameraScreen({ onRecordComplete, onCancel }: CameraScree
   }
 
   return (
-    <div style={{ minHeight: '100vh', background: '#1a1a1a', color: '#fff', padding: '2rem', display: 'flex', flexDirection: 'column' }}>
-      {/* Header with back button */}
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '3rem', maxWidth: '600px', margin: '0 auto 3rem' }}>
-        <h1 style={{ fontSize: '1.8rem', fontWeight: 600, margin: 0 }}>Record Your Swing</h1>
-        {onCancel && (
-          <button
-            onClick={onCancel}
-            style={{
-              background: 'transparent',
-              border: '1px solid #d4af37',
-              color: '#d4af37',
-              padding: '0.5rem 1rem',
-              fontWeight: 600,
-              cursor: 'pointer',
-              fontSize: '0.9rem',
-            }}
-          >
+    <div style={{ minHeight: '100vh', background: '#1a1a1a', color: '#fff', display: 'flex', flexDirection: 'column' }}>
+      <PageHeader
+        title="Record Your Swing"
+        leftAction={onCancel && (
+          <button onClick={onCancel} style={{ background: 'transparent', border: 'none', color: '#d4af37', fontWeight: 600, cursor: 'pointer', fontSize: '0.9rem', padding: 0 }}>
             ← Back
           </button>
         )}
-      </div>
+      />
 
       {/* Main content */}
       <div style={{ flex: 1, maxWidth: '100%', margin: '0 auto', width: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>

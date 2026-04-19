@@ -7,6 +7,7 @@ import CameraScreen from '@/components/CameraScreen'
 import VideoPlayer from '@/components/VideoPlayer'
 import MetricCards from '@/components/MetricCards'
 import FeedbackPanel from '@/components/FeedbackPanel'
+import PageHeader from '@/components/PageHeader'
 import { saveSwingSession, generateSessionId } from '@/lib/storage'
 
 type Screen = 'splash' | 'camera' | 'playback'
@@ -95,59 +96,34 @@ export default function HomePage() {
     <div style={{ minHeight: '100vh', background: '#1a1a1a', color: '#fff' }}>
       {screen === 'camera' ? (
         <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
-          {/* Camera header with History link */}
-          <div style={{ padding: '1rem', display: 'flex', justifyContent: 'flex-end', borderBottom: '1px solid #333' }}>
-            <Link href="/history" style={{
-              color: '#d4af37',
-              textDecoration: 'none',
-              fontSize: '0.9rem',
-              fontWeight: 600,
-              cursor: 'pointer',
-              padding: '0.5rem 1rem',
-            }}>
-              View History
-            </Link>
-          </div>
+          <PageHeader
+            title="Record Your Swing"
+            rightAction={
+              <Link href="/history" style={{ color: '#d4af37', textDecoration: 'none', fontSize: '0.85rem', fontWeight: 600 }}>
+                History
+              </Link>
+            }
+          />
           <CameraScreen onRecordComplete={handleRecordComplete} onCancel={() => setScreen('camera')} />
         </div>
       ) : (
-        <div style={{ padding: '2rem 1rem', minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
-          {/* Header with back button */}
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem', maxWidth: '1000px', margin: '0 auto 2rem' }}>
-            <h1 style={{ fontSize: '1.8rem', fontWeight: 600, margin: 0 }}>Your Swing</h1>
-            <div style={{ display: 'flex', gap: '1rem' }}>
-              <Link href="/history" style={{
-                background: 'transparent',
-                border: '1px solid #d4af37',
-                color: '#d4af37',
-                padding: '0.5rem 1rem',
-                fontWeight: 600,
-                cursor: 'pointer',
-                fontSize: '0.9rem',
-                textDecoration: 'none',
-                display: 'inline-block',
-              }}>
-                📊 History
-              </Link>
-              <button
-                onClick={handleReset}
-                style={{
-                  background: 'transparent',
-                  border: '1px solid #d4af37',
-                  color: '#d4af37',
-                  padding: '0.5rem 1rem',
-                  fontWeight: 600,
-                  cursor: 'pointer',
-                  fontSize: '0.9rem',
-                }}
-              >
-                ← Record New Swing
+        <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
+          <PageHeader
+            title="Your Swing"
+            leftAction={
+              <button onClick={handleReset} style={{ background: 'transparent', border: 'none', color: '#d4af37', fontWeight: 600, cursor: 'pointer', fontSize: '0.85rem', padding: 0 }}>
+                ← New Swing
               </button>
-            </div>
-          </div>
+            }
+            rightAction={
+              <Link href="/history" style={{ color: '#d4af37', textDecoration: 'none', fontSize: '0.85rem', fontWeight: 600 }}>
+                History
+              </Link>
+            }
+          />
 
           {/* Main analysis grid */}
-          <div style={{ flex: 1, maxWidth: '1000px', margin: '0 auto', width: '100%' }}>
+          <div style={{ flex: 1, maxWidth: '1000px', margin: '0 auto', width: '100%', padding: '2rem 1rem' }}>
             <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr', gap: '2rem' }}>
               {/* Video + Overlay */}
               <div>

@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
+import PageHeader from '@/components/PageHeader'
 import {
   LineChart,
   Line,
@@ -107,25 +108,16 @@ export default function HistoryPage() {
   }
 
   return (
-    <div style={{ minHeight: '100vh', background: '#1a1a1a', color: '#fff', padding: '2rem 1rem' }}>
-      <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
-        {/* Header */}
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem' }}>
-          <h1 style={{ fontSize: '1.8rem', fontWeight: 600, margin: 0 }}>Swing History</h1>
-          <Link href="/" style={{
-            background: 'transparent',
-            border: '1px solid #d4af37',
-            color: '#d4af37',
-            padding: '0.5rem 1rem',
-            fontWeight: 600,
-            cursor: 'pointer',
-            fontSize: '0.9rem',
-            textDecoration: 'none',
-            display: 'inline-block',
-          }}>
+    <div style={{ minHeight: '100vh', background: '#1a1a1a', color: '#fff' }}>
+      <PageHeader
+        title="Swing History"
+        leftAction={
+          <Link href="/" style={{ color: '#d4af37', textDecoration: 'none', fontSize: '0.85rem', fontWeight: 600 }}>
             ← Back
           </Link>
-        </div>
+        }
+      />
+      <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '2rem 1rem' }}>
 
         {sessions.length === 0 ? (
           // Empty state
