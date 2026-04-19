@@ -111,22 +111,42 @@ export default function HomePage() {
           <PageHeader
             title="Your Swing"
             leftAction={
-              <button onClick={handleReset} style={{ background: 'transparent', border: 'none', color: '#d4af37', fontWeight: 600, cursor: 'pointer', fontSize: '0.85rem', padding: 0 }}>
+              <button onClick={handleReset} style={{ background: 'transparent', border: 'none', color: '#d4af37', fontWeight: 600, cursor: 'pointer', fontSize: '0.85rem', padding: 0, minHeight: '44px', display: 'flex', alignItems: 'center' }}>
                 ← New Swing
               </button>
             }
             rightAction={
-              <Link href="/history" style={{ color: '#d4af37', textDecoration: 'none', fontSize: '0.85rem', fontWeight: 600 }}>
+              <Link href="/history" style={{ color: '#d4af37', textDecoration: 'none', fontSize: '0.85rem', fontWeight: 600, minHeight: '44px', display: 'flex', alignItems: 'center' }}>
                 History
               </Link>
             }
           />
 
           {/* Main analysis grid */}
-          <div style={{ flex: 1, maxWidth: '1000px', margin: '0 auto', width: '100%', padding: '2rem 1rem' }}>
-            <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr', gap: '2rem' }}>
+          <div style={{ flex: 1, maxWidth: '1000px', margin: '0 auto', width: '100%', padding: '1rem' }}>
+            <style>{`
+              @media (max-width: 767px) {
+                .playback-grid {
+                  display: grid;
+                  grid-template-columns: 1fr;
+                  gap: 1.5rem;
+                }
+                .playback-video {
+                  order: -1;
+                  margin-bottom: 0;
+                }
+              }
+              @media (min-width: 768px) {
+                .playback-grid {
+                  display: grid;
+                  grid-template-columns: 2fr 1fr;
+                  gap: 2rem;
+                }
+              }
+            `}</style>
+            <div className="playback-grid">
               {/* Video + Overlay */}
-              <div>
+              <div className="playback-video">
                 {videoUrl && (
                   <VideoPlayer videoUrl={videoUrl} onMetricsUpdate={handleMetricsUpdate} />
                 )}

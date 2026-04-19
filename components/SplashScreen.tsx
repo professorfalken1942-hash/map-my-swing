@@ -64,7 +64,7 @@ export default function SplashScreen({ onStart }: SplashScreenProps) {
         </p>
       </div>
 
-      <div style={{ zIndex: 1, width: '100%', maxWidth: '420px' }}>
+      <div style={{ zIndex: 1, width: '100%', maxWidth: '420px', paddingLeft: '1rem', paddingRight: '1rem' }}>
         <button
           onClick={onStart}
           style={{
@@ -75,10 +75,14 @@ export default function SplashScreen({ onStart }: SplashScreenProps) {
             border: 'none',
             borderRadius: '999px',
             fontWeight: 700,
-            fontSize: '1.05rem',
+            fontSize: 'clamp(0.95rem, 4vw, 1.05rem)',
             letterSpacing: '0.01em',
             cursor: 'pointer',
             boxShadow: '0 10px 30px rgba(212, 175, 55, 0.25)',
+            minHeight: '56px',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
           }}
         >
           Record My Swing →

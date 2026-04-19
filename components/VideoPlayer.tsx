@@ -67,19 +67,24 @@ export default function VideoPlayer({ videoUrl, onMetricsUpdate }: VideoPlayerPr
         style={{ width: '100%', marginBottom: '1rem', cursor: 'pointer' }}
       />
 
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
-        <span style={{ fontSize: '0.9rem' }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem', gap: '0.75rem', fontSize: 'clamp(0.8rem, 2vw, 0.9rem)' }}>
+        <span>
           {Math.floor(currentTime)}s / {Math.floor(duration)}s
         </span>
         <button
           onClick={handleSlowMotion}
           style={{
-            padding: '0.5rem 1rem',
+            padding: '0.5rem 0.75rem',
             background: slowMotion ? '#d4af37' : 'transparent',
             color: slowMotion ? '#000' : '#d4af37',
             border: '1px solid #d4af37',
             fontWeight: 600,
             cursor: 'pointer',
+            fontSize: 'clamp(0.75rem, 2vw, 0.85rem)',
+            minHeight: '40px',
+            display: 'flex',
+            alignItems: 'center',
+            whiteSpace: 'nowrap',
           }}
         >
           {slowMotion ? '1x' : '0.5x'} Speed
@@ -90,21 +95,21 @@ export default function VideoPlayer({ videoUrl, onMetricsUpdate }: VideoPlayerPr
       <div style={{ display: 'flex', gap: '0.5rem' }}>
         <button
           onClick={() => skipFrame(-1)}
-          style={{ flex: 1, padding: '0.75rem', background: '#333', color: '#d4af37', border: 'none', cursor: 'pointer' }}
+          style={{ flex: 1, padding: '0.75rem', background: '#333', color: '#d4af37', border: 'none', cursor: 'pointer', minHeight: '48px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
         >
-          <SkipBack size={20} style={{ margin: '0 auto' }} />
+          <SkipBack size={20} style={{ margin: 0 }} />
         </button>
         <button
           onClick={togglePlay}
-          style={{ flex: 2, padding: '0.75rem', background: '#d4af37', color: '#000', border: 'none', fontWeight: 600, cursor: 'pointer' }}
+          style={{ flex: 2, padding: '0.75rem', background: '#d4af37', color: '#000', border: 'none', fontWeight: 600, cursor: 'pointer', minHeight: '48px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
         >
-          {isPlaying ? <Pause size={20} style={{ margin: '0 auto' }} /> : <Play size={20} style={{ margin: '0 auto' }} />}
+          {isPlaying ? <Pause size={20} style={{ margin: 0 }} /> : <Play size={20} style={{ margin: 0 }} />}
         </button>
         <button
           onClick={() => skipFrame(1)}
-          style={{ flex: 1, padding: '0.75rem', background: '#333', color: '#d4af37', border: 'none', cursor: 'pointer' }}
+          style={{ flex: 1, padding: '0.75rem', background: '#333', color: '#d4af37', border: 'none', cursor: 'pointer', minHeight: '48px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
         >
-          <SkipForward size={20} style={{ margin: '0 auto' }} />
+          <SkipForward size={20} style={{ margin: 0 }} />
         </button>
       </div>
     </div>

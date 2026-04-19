@@ -69,11 +69,15 @@ export default function CameraScreen({ onRecordComplete, onCancel }: CameraScree
     padding: '1.25rem 2rem',
     border: '1px solid #d4af37',
     fontWeight: 600,
-    fontSize: '1rem',
+    fontSize: 'clamp(0.95rem, 4vw, 1rem)',
     cursor: 'pointer',
     width: '100%',
     maxWidth: '340px',
     letterSpacing: '0.02em',
+    minHeight: '56px',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
   }
 
   return (
@@ -83,19 +87,19 @@ export default function CameraScreen({ onRecordComplete, onCancel }: CameraScree
         leftAction={
           <button
             onClick={() => mode === 'choose' ? onCancel?.() : setMode('choose')}
-            style={{ background: 'transparent', border: 'none', color: '#d4af37', fontWeight: 600, cursor: 'pointer', fontSize: '0.9rem', padding: 0 }}
+            style={{ background: 'transparent', border: 'none', color: '#d4af37', fontWeight: 600, cursor: 'pointer', fontSize: '0.9rem', padding: 0, minHeight: '44px', display: 'flex', alignItems: 'center' }}
           >
             ← {mode === 'choose' ? 'Back' : 'Change'}
           </button>
         }
       />
 
-      <div style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '2rem' }}>
+      <div style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '1rem', width: '100%' }}>
 
         {/* Choose mode */}
         {mode === 'choose' && (
-          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '1rem', width: '100%' }}>
-            <p style={{ color: '#888', fontSize: '0.9rem', marginBottom: '1rem', letterSpacing: '0.05em', textTransform: 'uppercase' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '1.25rem', width: '100%', paddingLeft: '1rem', paddingRight: '1rem' }}>
+            <p style={{ color: '#888', fontSize: '0.9rem', marginBottom: '0.5rem', letterSpacing: '0.05em', textTransform: 'uppercase' }}>
               Choose how to add your swing
             </p>
             <button
@@ -122,7 +126,7 @@ export default function CameraScreen({ onRecordComplete, onCancel }: CameraScree
 
         {/* Camera mode */}
         {mode === 'camera' && (
-          <div style={{ width: '100%', display: 'flex', flexDirection: 'column' }}>
+          <div style={{ width: '100%', display: 'flex', flexDirection: 'column', height: '100%' }}>
             <video
               ref={videoRef}
               autoPlay
@@ -130,33 +134,42 @@ export default function CameraScreen({ onRecordComplete, onCancel }: CameraScree
               muted
               style={{
                 width: '100%',
-                height: 'calc(100vh - 220px)',
+                flex: 1,
                 objectFit: 'cover',
                 background: '#000',
-                marginBottom: '1.5rem',
+                marginBottom: '1rem',
                 display: isCameraReady ? 'block' : 'none',
+                minHeight: '300px',
               }}
             />
             {!isCameraReady ? (
               <p style={{ color: '#888', textAlign: 'center' }}>Starting camera...</p>
             ) : (
               <>
-                <button
-                  onClick={isRecording ? stopRecording : startRecording}
-                  style={{
-                    padding: '1rem',
-                    background: isRecording ? '#ef4444' : '#d4af37',
-                    color: isRecording ? '#fff' : '#000',
-                    border: 'none',
-                    fontWeight: 600,
-                    fontSize: '1.1rem',
-                    cursor: 'pointer',
-                  }}
-                >
-                  {isRecording ? '⏹ Stop Recording' : '🔴 Start Recording'}
-                </button>
+                <div style={{ paddingLeft: '1rem', paddingRight: '1rem', paddingBottom: '1rem' }}>
+                  <button
+                    onClick={isRecording ? stopRecording : startRecording}
+                    style={{
+                      width: '100%',
+                      padding: '1.25rem 1.5rem',
+                      background: isRecording ? '#ef4444' : '#d4af37',
+                      color: isRecording ? '#fff' : '#000',
+                      border: 'none',
+                      fontWeight: 600,
+                      fontSize: 'clamp(0.95rem, 4vw, 1.1rem)',
+                      cursor: 'pointer',
+                      borderRadius: '4px',
+                      minHeight: '56px',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                    }}
+                  >
+                    {isRecording ? '⏹ Stop Recording' : '🔴 Start Recording'}
+                  </button>
+                </div>
                 {isRecording && (
-                  <p style={{ marginTop: '1rem', color: '#ef4444', fontWeight: 600, textAlign: 'center' }}>
+                  <p style={{ marginTop: 0, marginBottom: '1rem', color: '#ef4444', fontWeight: 600, textAlign: 'center', fontSize: '1rem' }}>
                     ● Recording...
                   </p>
                 )}

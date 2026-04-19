@@ -112,12 +112,12 @@ export default function HistoryPage() {
       <PageHeader
         title="Swing History"
         leftAction={
-          <Link href="/" style={{ color: '#d4af37', textDecoration: 'none', fontSize: '0.85rem', fontWeight: 600 }}>
+          <Link href="/" style={{ color: '#d4af37', textDecoration: 'none', fontSize: '0.85rem', fontWeight: 600, minHeight: '44px', display: 'flex', alignItems: 'center' }}>
             ← Back
           </Link>
         }
       />
-      <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '2rem 1rem' }}>
+      <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '1rem' }}>
 
         {sessions.length === 0 ? (
           // Empty state
@@ -146,6 +146,45 @@ export default function HistoryPage() {
             {/* Session List */}
             <div style={{ marginBottom: '2rem' }}>
               <h2 style={{ fontSize: '1.1rem', fontWeight: 600, marginBottom: '1rem', color: '#d4af37' }}>Recent Swings</h2>
+              <style>{`
+                @media (max-width: 767px) {
+                  .session-card {
+                    display: flex;
+                    flex-direction: column;
+                    gap: 1rem;
+                  }
+                  .session-date {
+                    width: 100%;
+                  }
+                  .session-metrics {
+                    display: grid;
+                    grid-template-columns: repeat(3, 1fr);
+                    gap: 0.75rem;
+                  }
+                  .metric-item {
+                    padding: 0.75rem !important;
+                  }
+                  .metric-item p {
+                    font-size: 0.75rem;
+                  }
+                  .metric-value {
+                    font-size: 1.1rem !important;
+                  }
+                }
+                @media (min-width: 768px) {
+                  .session-card {
+                    display: grid;
+                    grid-template-columns: 1fr 3fr;
+                    gap: 1.5rem;
+                    align-items: start;
+                  }
+                  .session-metrics {
+                    display: grid;
+                    grid-template-columns: repeat(3, 1fr);
+                    gap: 1rem;
+                  }
+                }
+              `}</style>
               <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
                 {sessions.map((session) => {
                   const hipStatus = getMetricStatus('hipRotation', session.metrics.hipRotation)
@@ -155,29 +194,26 @@ export default function HistoryPage() {
                   return (
                     <div
                       key={session.id}
+                      className="session-card"
                       style={{
                         background: '#222',
                         border: '1px solid #333',
                         borderRadius: '8px',
                         padding: '1.5rem',
-                        display: 'grid',
-                        gridTemplateColumns: '1fr 3fr',
-                        gap: '1.5rem',
-                        alignItems: 'start',
                       }}
                     >
                       {/* Date */}
-                      <div>
+                      <div className="session-date">
                         <p style={{ margin: '0 0 0.5rem 0', fontSize: '0.9rem', color: '#888' }}>Date</p>
                         <p style={{ margin: 0, fontWeight: 600 }}>{formatDate(session.createdAt)}</p>
                       </div>
 
                       {/* Metrics Grid */}
-                      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '1rem' }}>
+                      <div className="session-metrics" style={{ display: 'grid' }}>
                         {/* Hip Rotation */}
-                        <div style={{ background: '#1a1a1a', padding: '1rem', borderRadius: '6px', borderLeft: `4px solid ${hipStatus.color}` }}>
+                        <div className="metric-item" style={{ background: '#1a1a1a', padding: '1rem', borderRadius: '6px', borderLeft: `4px solid ${hipStatus.color}` }}>
                           <p style={{ margin: '0 0 0.5rem 0', fontSize: '0.85rem', color: '#888' }}>Hip Rotation</p>
-                          <p style={{ margin: '0 0 0.25rem 0', fontSize: '1.3rem', fontWeight: 600 }}>
+                          <p className="metric-value" style={{ margin: '0 0 0.25rem 0', fontSize: '1.3rem', fontWeight: 600 }}>
                             {session.metrics.hipRotation.toFixed(1)}°
                           </p>
                           <p style={{ margin: 0, fontSize: '0.8rem', color: hipStatus.color }}>
@@ -186,9 +222,9 @@ export default function HistoryPage() {
                         </div>
 
                         {/* Shoulder Rotation */}
-                        <div style={{ background: '#1a1a1a', padding: '1rem', borderRadius: '6px', borderLeft: `4px solid ${shoulderStatus.color}` }}>
+                        <div className="metric-item" style={{ background: '#1a1a1a', padding: '1rem', borderRadius: '6px', borderLeft: `4px solid ${shoulderStatus.color}` }}>
                           <p style={{ margin: '0 0 0.5rem 0', fontSize: '0.85rem', color: '#888' }}>Shoulder Turn</p>
-                          <p style={{ margin: '0 0 0.25rem 0', fontSize: '1.3rem', fontWeight: 600 }}>
+                          <p className="metric-value" style={{ margin: '0 0 0.25rem 0', fontSize: '1.3rem', fontWeight: 600 }}>
                             {session.metrics.shoulderRotation.toFixed(1)}°
                           </p>
                           <p style={{ margin: 0, fontSize: '0.8rem', color: shoulderStatus.color }}>
@@ -197,9 +233,9 @@ export default function HistoryPage() {
                         </div>
 
                         {/* Tempo Ratio */}
-                        <div style={{ background: '#1a1a1a', padding: '1rem', borderRadius: '6px', borderLeft: `4px solid ${tempoStatus.color}` }}>
+                        <div className="metric-item" style={{ background: '#1a1a1a', padding: '1rem', borderRadius: '6px', borderLeft: `4px solid ${tempoStatus.color}` }}>
                           <p style={{ margin: '0 0 0.5rem 0', fontSize: '0.85rem', color: '#888' }}>Swing Tempo</p>
-                          <p style={{ margin: '0 0 0.25rem 0', fontSize: '1.3rem', fontWeight: 600 }}>
+                          <p className="metric-value" style={{ margin: '0 0 0.25rem 0', fontSize: '1.3rem', fontWeight: 600 }}>
                             {session.metrics.tempoRatio.toFixed(2)}x
                           </p>
                           <p style={{ margin: 0, fontSize: '0.8rem', color: tempoStatus.color }}>
@@ -217,9 +253,23 @@ export default function HistoryPage() {
             {sessions.length >= 2 && (
               <div style={{ marginBottom: '2rem' }}>
                 <h2 style={{ fontSize: '1.1rem', fontWeight: 600, marginBottom: '1.5rem', color: '#d4af37' }}>Progress Over Time</h2>
+                <style>{`
+                  @media (max-width: 767px) {
+                    .chart-container {
+                      margin-bottom: 1.5rem;
+                      height: 250px;
+                    }
+                  }
+                  @media (min-width: 768px) {
+                    .chart-container {
+                      margin-bottom: 2rem;
+                      height: 200px;
+                    }
+                  }
+                `}</style>
 
                 {/* Hip Rotation Chart */}
-                <div style={{ marginBottom: '2rem', background: '#222', borderRadius: '8px', padding: '1.5rem' }}>
+                <div className="chart-container" style={{ background: '#222', borderRadius: '8px', padding: '1.5rem' }}>
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
                     <h3 style={{ margin: 0, fontSize: '1rem', fontWeight: 600 }}>Hip Rotation</h3>
                     <span style={{ fontSize: '0.9rem', color: '#888' }}>{calculateTrend('hipRotation')}</span>
@@ -242,7 +292,7 @@ export default function HistoryPage() {
                 </div>
 
                 {/* Shoulder Rotation Chart */}
-                <div style={{ marginBottom: '2rem', background: '#222', borderRadius: '8px', padding: '1.5rem' }}>
+                <div className="chart-container" style={{ background: '#222', borderRadius: '8px', padding: '1.5rem' }}>
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
                     <h3 style={{ margin: 0, fontSize: '1rem', fontWeight: 600 }}>Shoulder Turn</h3>
                     <span style={{ fontSize: '0.9rem', color: '#888' }}>{calculateTrend('shoulderRotation')}</span>
@@ -265,7 +315,7 @@ export default function HistoryPage() {
                 </div>
 
                 {/* Tempo Ratio Chart */}
-                <div style={{ background: '#222', borderRadius: '8px', padding: '1.5rem' }}>
+                <div className="chart-container" style={{ background: '#222', borderRadius: '8px', padding: '1.5rem' }}>
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
                     <h3 style={{ margin: 0, fontSize: '1rem', fontWeight: 600 }}>Swing Tempo</h3>
                     <span style={{ fontSize: '0.9rem', color: '#888' }}>{calculateTrend('tempoRatio')}</span>
@@ -302,6 +352,9 @@ export default function HistoryPage() {
                   cursor: 'pointer',
                   fontSize: '0.9rem',
                   borderRadius: '4px',
+                  minHeight: '48px',
+                  maxWidth: '340px',
+                  width: '100%',
                 }}
               >
                 🗑️ Clear All History
