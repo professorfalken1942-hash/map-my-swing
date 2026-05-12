@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Map My Swing — Golf Swing Analyzer",
+  title: "Swing Coach — Golf Swing Analyzer",
   description: "Analyze your golf swing with frame-by-frame breakdown, tempo analysis, and swing metrics.",
 };
 

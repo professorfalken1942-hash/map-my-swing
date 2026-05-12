@@ -1,4 +1,4 @@
-# Map My Swing — Golf Swing Analyzer
+# Swing Coach — Golf Swing Analyzer
 
 A premium golf swing analysis platform. Upload videos, get frame-by-frame breakdown, tempo analysis, and actionable insights.
 

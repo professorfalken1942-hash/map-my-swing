@@ -203,12 +203,13 @@ export default function PoseOverlay({
       const video = videoRef.current
       const canvas = canvasRef.current
 
-      if (!video || !canvas || video.paused || video.ended) {
+      if (!video || !canvas) {
         animationIdRef.current = requestAnimationFrame(processFrame)
         return
       }
 
-      // Sample every 3rd frame to maintain 60fps UI
+      // Process frame regardless of play/pause state (allows metrics on any frame)
+      // Sample every 3rd frame to maintain 60fps UI during playback
       frameCountRef.current++
       if (frameCountRef.current % 3 === 0) {
         try {

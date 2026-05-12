@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useRef } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import { Play, Pause, SkipBack, SkipForward } from 'lucide-react'
 import PoseOverlay from './PoseOverlay'
 
@@ -15,6 +15,11 @@ export default function VideoPlayer({ videoUrl, onMetricsUpdate }: VideoPlayerPr
   const [currentTime, setCurrentTime] = useState(0)
   const [duration, setDuration] = useState(0)
   const [slowMotion, setSlowMotion] = useState(false)
+  const [error, setError] = useState<string | null>(null)
+
+  useEffect(() => {
+    console.log('VideoPlayer mounted with videoUrl:', videoUrl)
+  }, [videoUrl])
 
   const togglePlay = () => {
     if (videoRef.current) {
@@ -43,6 +48,14 @@ export default function VideoPlayer({ videoUrl, onMetricsUpdate }: VideoPlayerPr
   return (
     <div style={{ marginBottom: '1.5rem' }}>
       <div style={{ position: 'relative', width: '100%', aspectRatio: '16/9', marginBottom: '1rem' }}>
+        {error && (
+          <div style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, background: '#111', borderRadius: '4px', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#ff6b6b', padding: '1rem', textAlign: 'center', zIndex: 10 }}>
+            <div>
+              <p style={{ fontWeight: 600, marginBottom: '0.5rem' }}>Video Playback Error</p>
+              <p style={{ fontSize: '0.9rem' }}>{error}</p>
+            </div>
+          </div>
+        )}
         <video
           ref={videoRef}
           src={videoUrl}
@@ -50,6 +63,29 @@ export default function VideoPlayer({ videoUrl, onMetricsUpdate }: VideoPlayerPr
           onTimeUpdate={(e) => setCurrentTime(e.currentTarget.currentTime)}
           onLoadedMetadata={(e) => setDuration(e.currentTarget.duration)}
           onEnded={() => setIsPlaying(false)}
+          onError={(e) => {
+            const target = e.currentTarget
+            let errorMsg = 'Unknown error'
+            if (target.error) {
+              switch (target.error.code) {
+                case 1:
+                  errorMsg = 'Loading aborted'
+                  break
+                case 2:
+                  errorMsg = 'Network error'
+                  break
+                case 3:
+                  errorMsg = 'Decoding failed'
+                  break
+                case 4:
+                  errorMsg = 'Format not supported'
+                  break
+              }
+            }
+            setError(errorMsg)
+            console.error('Video error:', errorMsg, target.error)
+          }}
+          controls={false}
         />
         <PoseOverlay videoRef={videoRef} onMetricsUpdate={onMetricsUpdate} />
       </div>

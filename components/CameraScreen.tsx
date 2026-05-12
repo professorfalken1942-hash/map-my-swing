@@ -62,12 +62,33 @@ export default function CameraScreen({ onRecordComplete, onCancel }: CameraScree
   const startRecording = () => {
     if (!videoRef.current?.srcObject) return
     const stream = videoRef.current.srcObject as MediaStream
-    const mediaRecorder = new MediaRecorder(stream)
+    
+    // Find a supported MIME type for recording
+    let mimeType = 'video/webm'
+    const supportedTypes = [
+      'video/webm;codecs=vp8,opus',
+      'video/webm;codecs=vp9,opus',
+      'video/webm',
+      'video/mp4',
+    ]
+    
+    for (const type of supportedTypes) {
+      if (MediaRecorder.isTypeSupported(type)) {
+        mimeType = type
+        break
+      }
+    }
+    
+    const mediaRecorder = new MediaRecorder(stream, { mimeType })
     const chunks: BlobPart[] = []
     mediaRecorder.ondataavailable = (e) => chunks.push(e.data)
     mediaRecorder.onstop = () => {
-      const blob = new Blob(chunks, { type: 'video/webm' })
+      const blob = new Blob(chunks, { type: mimeType })
       onRecordComplete(blob)
+    }
+    mediaRecorder.onerror = (e) => {
+      console.error('Recording error:', e.error)
+      alert(`Recording error: ${e.error}`)
     }
     mediaRecorder.start()
     mediaRecorderRef.current = mediaRecorder
@@ -154,54 +175,59 @@ export default function CameraScreen({ onRecordComplete, onCancel }: CameraScree
 
         {/* Video — always in DOM so ref is available before camera starts */}
         <div style={{ width: '100%', display: mode === 'camera' ? 'flex' : 'none', flexDirection: 'column', height: '100%' }}>
-          <video
-            ref={videoRef}
-            autoPlay
-            playsInline
-            muted
-            style={{
-              width: '100%',
-              flex: 1,
-              objectFit: 'cover',
-              background: '#000',
-              marginBottom: '1rem',
-              display: isCameraReady ? 'block' : 'none',
-              minHeight: '300px',
-            }}
-          />
           {mode === 'camera' && !isCameraReady && (
-            <p style={{ color: '#888', textAlign: 'center' }}>Starting camera...</p>
+            <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+              <p style={{ color: '#888', textAlign: 'center' }}>Starting camera...</p>
+            </div>
           )}
           {mode === 'camera' && isCameraReady && (
             <>
-              <div style={{ paddingLeft: '1rem', paddingRight: '1rem', paddingBottom: '1rem' }}>
-                <button
-                  onClick={isRecording ? stopRecording : startRecording}
-                  style={{
-                    width: '100%',
-                    padding: '1.25rem 1.5rem',
-                    background: isRecording ? '#ef4444' : '#d4af37',
-                    color: isRecording ? '#fff' : '#000',
-                    border: 'none',
-                    fontWeight: 600,
-                    fontSize: 'clamp(0.95rem, 4vw, 1.1rem)',
-                    cursor: 'pointer',
-                    borderRadius: '4px',
-                    minHeight: '56px',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                  }}
-                >
-                  {isRecording ? '⏹ Stop Recording' : '🔴 Start Recording'}
-                </button>
-              </div>
+              <video
+                ref={videoRef}
+                autoPlay
+                playsInline
+                muted
+                style={{
+                  width: '100%',
+                  flex: 1,
+                  objectFit: 'cover',
+                  background: '#000',
+                  display: 'block',
+                  minHeight: '240px',
+                }}
+              />
               {isRecording && (
-                <p style={{ marginTop: 0, marginBottom: '1rem', color: '#ef4444', fontWeight: 600, textAlign: 'center', fontSize: '1rem' }}>
+                <p style={{ margin: '1rem 0 0 0', color: '#ef4444', fontWeight: 600, textAlign: 'center', fontSize: '1rem' }}>
                   ● Recording...
                 </p>
               )}
             </>
+          )}
+          {mode === 'camera' && isCameraReady && (
+            <div style={{ padding: '1rem', background: '#111' }}>
+              <button
+                onClick={isRecording ? stopRecording : startRecording}
+                style={{
+                  width: '100%',
+                  padding: '1.5rem 2rem',
+                  background: isRecording ? '#ef4444' : '#d4af37',
+                  color: isRecording ? '#fff' : '#000',
+                  border: 'none',
+                  fontWeight: 700,
+                  fontSize: 'clamp(1rem, 5vw, 1.2rem)',
+                  cursor: 'pointer',
+                  borderRadius: '4px',
+                  minHeight: '64px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  gap: '0.5rem',
+                  letterSpacing: '0.02em',
+                }}
+              >
+                {isRecording ? '⏹ Stop Recording' : '🔴 Start Recording'}
+              </button>
+            </div>
           )}
         </div>
       </div>
